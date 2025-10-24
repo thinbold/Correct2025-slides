@@ -1,0 +1,404 @@
+% !TEX encoding = UTF-8
+% !TEX program = lualatex
+
+\documentclass[a4paper]{article}
+
+\usepackage[left=1.5cm, right=1.5cm, top=1cm, bottom=2cm]{geometry}
+
+\usepackage{mathtools, amssymb}
+    \def\FF{\mathbf F}
+
+\usepackage{emoji}
+    \setmainfont{Noto Serif}
+    \setsansfont{Noto Sans TC}
+    \setmonofont{Noto Sans Mono}
+
+\usepackage{tikz}
+
+\usepackage[colorlinks, linkcolor=white]{hyperref}
+
+\begin{document}
+
+\parindent 0pt
+\parskip 1em
+
+\def\answersheet{}
+\def\addblank#1{\xdef\answersheet{\answersheet#1}}
+\newcounter{prblm}
+\def\Problem#1{%
+    \stepcounter{prblm}\bfseries[\theprblm]%
+    \addblank{[\theprblm]\hbox to#1{}\hskip0pt plus#1}%
+}
+
+\newcounter{chc}
+\def\choice#1{%
+    \stepcounter{chc}\ifnum\value{chc}=27\setcounter{chc}{1}\fi%
+    \mdseries#1(\Alph{chc})\nobreak\ 
+}
+\def\no{\choice{}}
+% \def\yes{\choice{}}
+\def\yes{\choice{\rlap{\color{white}\hyperref[yes]{(Y)}}}}
+
+\section*{Error Correcting Codes - Midterm Mock Exam}
+
+\section{Terminology}
+
+Unless otherwise specified,
+there is a $[n, k, d]$ linear code over a finite field $F$.
+
+\Problem{4em}
+A symbol corresponds to
+\no a basis
+\no a vector
+\no a linear subspace
+\yes a finite field element
+
+\Problem{4em}
+A codebook corresponds to
+\no a basis
+\no a vector
+\yes a linear subspace
+\no a finite field element
+
+\Problem{4em}
+A codeword corresponds to
+\no a basis
+\yes a vector
+\no a linear subspace
+\no a finite field element
+
+\Problem{4em}
+A generator matrix corresponds to
+\yes a basis
+\no a vector
+\no a linear subspace
+\no a finite field element
+
+\Problem{4em}
+The alphabet is?
+
+\Problem{4em}
+The code rate is?
+
+\Problem{4em}
+The block length is?
+
+\Problem{4em}
+The code dimension is?
+
+\Problem{4em}
+The minimum distance is?
+
+\Problem{4em}
+The number of codewords is?
+
+\section{Popular Codes}
+
+\Problem{4em}
+A code invariant under rotating is called
+\yes cyclic code
+\no repetition code
+\no tensor product code
+\no single parity-check code
+
+\Problem{4em}
+A code that looks like a sudoku puzzle is called
+\no cyclic code
+\no repetition code
+\yes tensor product code
+\no single parity-check code
+
+\Problem{4em}
+A nontrivial code having relative distance $1$ is called
+\no cyclic code
+\yes repetition code
+\no tensor product code
+\no single parity-check code
+
+\Problem{4em}
+A code obtained by forcing an even number of $1$'s in each codeword is called
+\no cyclic code
+\no repetition code
+\no tensor product code
+\yes single parity-check code
+
+\Problem{4em}
+A code whose syndrome is the binary representation
+of the error location is called
+\yes Hamming code
+\no Reed--Muller code
+\no Reed--Solomon code
+\no Bose--Chaudhuri--Hocquenghem code
+
+\Problem{4em}
+A code obtained by evaluating univariate polynomials is called
+\no Hamming code
+\no Reed--Muller code
+\yes Reed--Solomon code
+\no Bose--Chaudhuri--Hocquenghem code
+
+\Problem{4em}
+A code obtained by evaluating multilinear polynomials is called
+\no Hamming code
+\yes Reed--Muller code
+\no Reed--Solomon code
+\no Bose--Chaudhuri--Hocquenghem code
+
+\Problem{4em}
+A code where we care about consecutive roots of polynomials is called
+\no Hamming code
+\yes Reed--Muller code
+\no Reed--Solomon code
+\no Bose--Chaudhuri--Hocquenghem code
+
+\Problem{6em}
+A code that can uniquely correct $t$ errors and $s$ erasures
+need minimum distance at least?
+
+\Problem{4em}
+According to the sphere packing bound,
+a $[9, 3]$ code can have minimum distance at most?
+
+\section{Linear Algebra}
+
+\Problem{4em}
+What are the parameters $[n, k]$
+if the following $G \in \FF_2^{4\times6}$ is used?
+\[
+    \begin{bmatrix}
+        1 & 1 & 1 & 1 & 1 & 1 & 0 & 0 \\
+        1 & 1 & 1 & 1 & 0 & 0 & 1 & 1 \\
+        1 & 1 & 0 & 0 & 1 & 1 & 1 & 1 \\
+        0 & 0 & 1 & 1 & 1 & 1 & 1 & 1 \\
+    \end{bmatrix}
+\]
+
+\Problem{4em}
+What is the $d$ for the $G$ above?
+
+\Problem{10em}
+What is its weight enumerator (univariate)?
+
+\Problem{10em}
+List all information set containing the first column.
+(Use the format 1234, 1235, 1245, 1345, ...)
+
+\Problem{10em}
+What is the $H$ corresponding to this $G$?
+
+\Problem{6em}
+What are the parameters $[n, k, d]$
+if $G$ is treated as a matrix in $\FF_3^{4\times6}$?
+
+\Problem{6em}
+What is the smallest Reed--Muller code containing the codeword below?
+Answer the parameters $[n, k, d]$ and $(r, m)$.
+\[\begin{tikzpicture}
+    \foreach \x in {0, 1} {
+        \foreach \y in {0, 1} {
+            \draw [opacity=0.2]
+                (\x, \y, 0) -- (\x, \y, 1)
+                (\y, 0, \x) -- (\y, 1, \x)
+                (0, \x, \y) -- (1, \x, \y)
+            ;
+            \foreach \z in {0, 1} {
+                \foreach \w in {0, 1} {
+                    \pgfmathtruncatemacro\eval{mod(\x*\y + \z, 2)}
+                    \draw (\x, \y, \z) node {$\eval$};
+                }
+            }
+        }
+    }
+\end{tikzpicture}\]
+
+\Problem{10em}
+What is the generator matrix of the $[16, 11]$ Reed--Muller code?
+Order the evaluation points lexicographically and
+reorder the rows such that the first $11$ columns form an identity matrix.
+
+\Problem{10em}
+What is the generator polynomial of the
+smallest cyclic code containing $0000001111$?
+
+\Problem{10em}
+The first row of $H$ is $001$ and the last row is $111$.
+Between them are binary representations of $2$--$6$.
+Correct the received word $10010110$ that is flipped at most once.
+
+\section{Finite Field}
+
+\Problem{10em}
+List the sizes of all finite fields up to $10$.
+
+\Problem{10em}
+List the sizes of all finite fields from $10$ to $20$.
+
+\Problem{10em}
+Consider $\FF_4$;
+let $0$ be the additive identity,
+$1$ be the multiplicative identity, \\
+and $2$ and $3$ be the other two elements.
+Complete the addition table on the answer sheet. \\[-1.5cm]
+\hbox{}\hfill
+\begin{tikzpicture} [scale=0.3]
+    \draw (-1, 0) -- (0, 0) -- node [above] {$0$ $1$ $2$ $3$} (4, 0);
+    \draw (0, 1) -- (0, 0) node [above left] {$+$} --
+        node [below, rotate=-90] {$0$ $1$ $2$ $3$} (0, -4);
+\end{tikzpicture}
+
+\Problem{10em}
+Complete the multiplication table on the answer sheet.
+
+\Problem{10em}
+Factorize $x^5 + x^4 + 1 \in \FF_2[x]$.
+
+\Problem{10em}
+What is the $G$ of the $[5, 2]$ Reed--Solomon code over $\FF_5$.
+
+\Problem{10em}
+What is the best degree-$1$ polynomial if $[1, 3, 4, 2, e]$ is received,
+where $e$ means an erasure?
+
+\Problem{10em}
+Reduce $\alpha^{12}$ to a low degree polynomial
+if $101110001$ (a polynomial in $\alpha$) is used to construct $\FF_{256}$.
+
+\Problem{10em}
+Reduce $\alpha^{100000000000000000}$.
+
+\Problem{10em}
+A BCH code with designed roots $\alpha, \alpha^2, \alpha^3$ is used.
+A received word $r$ of is such that
+$r(\alpha) = \alpha^{-1}$ and $r(\alpha^3) = \alpha^{-6}$.
+Find the error-locating polynomial $aX^2 + bX + c$.
+
+\section{Probability}
+
+\mdseries
+Answer in scientific notation such as 2e-5.
+A problem with 2x precision requirement means that
+you get full credit if your answer is in $[a/2, 2a]$,
+where $a$ is the correct answer;
+5x means that your answer should be in $[a/5, 5a]$.
+And so on.
+\foreach \x in {2, e, 10} {
+    \foreach \b in {2, e, 10} {
+        \ifx \x \b \else
+            \pgfmathsetmacro\ll{ln(\x)/ln(\b)}
+            $\log_{\b}(\x) = \ll$.
+        \fi
+    }
+}
+
+\[\begin{tikzpicture} [scale=1.75]
+    \draw (0, 0) -- (10, 0);
+    \foreach \x in {0, ..., 9} {
+        \draw (\x, 0) -- +(0, 0.3) node [above] {$0.\x$};
+        \draw (\x.5, 0) -- +(0, 0.2);
+        \foreach \y in {1, 2, 3, 4, 6, 7, 8, 9} {
+            \draw (\x + \y/10, 0) -- +(0, 0.1);
+        }
+        \foreach \k in {1, ..., 9} {
+            \draw ({10*log10(\k)}, 0) -- +(0, -0.3)
+                node [right, rotate=-90] {$\log_{10}\k$};
+            \draw ({10*log10(\k + 0.5)}, 0) -- +(0, -0.2);
+            \foreach \l in {1, 2, 3, 4, 6, 7, 8, 9} {
+                \draw ({10*log10(\k + 0.\l)}, 0) -- +(0, -0.1);
+            }
+        }
+    }
+\end{tikzpicture}\]
+
+\Problem{6em} (2x)
+If a wifi environment is such that
+every $1$ MiB of data has an error probability of $10^{-8}$,
+what is the probability that a $1$-GiB file has an unrecoverable error?
+
+\Problem{6em} (2x)
+What if the file is $1$-TiB file?
+
+\Problem{6em} (2x)
+What is the capacity of the binary symmetric channel
+with crossover probability $10^{-3}$?
+
+\Problem{6em} (2x)
+What is the frame error rate if a single parity-check code
+of length $5$ is used over the BSC above?
+
+\Problem{6em} (2x)
+BPSK is used and one of $-1, 1$ is sent, with equal probability.
+Three symbols whose product is $1$ is sent.
+What is frame error probability?
+
+\Problem{6em} (2x)
+QPSK is used and one of $1, -1, i, -i$ is sent, with equal probability.
+The sigma of the complex Gaussian noise is $1$ and $2 + i$ is received.
+What is the posterior probability that $1$ is sent?
+
+\Problem{6em} (2x)
+What is the probability that $i$ is sent.
+
+\Problem{6em} (2x)
+What is the probability that $-1$ is sent.
+
+\Problem{6em} (2x)
+The same symbol is transmitted again and $1 - i$ is received.
+What is the new posterior probability that $1$ is sent?
+
+\Problem{6em} (2x)
+Consider a tensor product code whose codewords are
+$12 \times 12$ binary matrices whose rows and columns sum to even numbers.
+How many codewords have weight $6$?
+
+\section{Relevant Knowledge}
+
+\Problem{6em} (5x)
+What is the typical size of an internet packet?
+
+\Problem{6em} (5x)
+How much USB-drive storage can you buy with 1000 TWD?
+
+\Problem{6em} (5x)
+How many integer arithmetics can a consumer level CPU do in one second.
+
+\Problem{6em} (10x)
+What is coverage radius of a 5G cell tower
+(the one with the highest possible speed)?
+
+\Problem{6em} (10x)
+What is the design capacity of the FASTER
+trans-Pacific submarine communications cable?
+
+
+\clearpage
+
+\section*{Error Correcting Codes - Midterm Mock Exam}
+
+\sffamily
+
+考試時間 Test time 09:30:00 am to 12:00:00 pm; 2.5 hours.
+以教室投影機時鐘為準 Using the projected clock.
+在本頁作答 Answer on this page.
+每題一分 One point per problem.
+全對才給分 No partial credit.
+可以帶紙製品 Materials made of paper are allowed.
+聽音樂請帶耳機 Use earphones for music.
+禁止操作電子設備 Do not touch electronic devices.
+舉手問問題 Raise your hand to ask questions.
+
+\advance\lineskip1cm plus1fil
+\advance\baselineskip1cm plus1fil
+
+姓名 Name (zh or en) \hfil 學號 Student ID
+
+\answersheet
+
+% \clearpage
+
+% \section{Correct options}
+
+% are made into hyperlinks that lead to this page.
+
+% \label{yes}
+
+\end{document}
