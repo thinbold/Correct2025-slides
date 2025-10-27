@@ -1,8 +1,8 @@
-This is LuaHBTeX, Version 1.15.0 (TeX Live 2022)  (format=lualatex 2023.1.4)  20 OCT 2025 00:30
+This is LuaHBTeX, Version 1.15.0 (TeX Live 2022)  (format=lualatex 2023.1.4)  24 OCT 2025 14:00
  system commands enabled.
  file:line:error style messages enabled.
-**"/Users/ThinBold/Git/Correct midtrue/midtrue"
-("/Users/ThinBold/Git/Correct midtrue/midtrue.tex"
+**/Users/ThinBold/Git/Correct2025-slides/midtrue
+(/Users/ThinBold/Git/Correct2025-slides/midtrue.tex
 LaTeX2e <2022-11-01> patch level 1
 Lua module: luaotfload 2022-10-03 3.23 Lua based OpenType font support
 Lua module: lualibs 2022-10-04 2.75 ConTeXt Lua standard libraries.
@@ -656,7 +656,7 @@ Here is how much of LuaTeX's memory you used:
    avail lists: 2:3899,3:1963,4:22,5:233,6:39,7:11989,8:25,9:1092,10:10,11:544
  36718 multiletter control sequences out of 65536+600000
  65 fonts using 36356591 bytes
- 100i,7n,98p,421b,842s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 100i,7n,98p,422b,842s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </Users/ThinBold/Library/Fonts/NotoSerif-Regular.ttf></Users/ThinBold/Library/Fonts/NotoSansTC-Regular.otf></Users/ThinBold/Library/Fonts/NotoSerif-Bold.ttf></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb>
 Output written on midtrue.pdf (5 pages, 130339 bytes).
 
