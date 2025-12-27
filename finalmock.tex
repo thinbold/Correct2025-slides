@@ -7,6 +7,12 @@
 
 \usepackage{mathtools, amssymb}
     \def\FF{\mathbf F}
+    \def\tr{\operatorname{tr}}
+    \def\BEC{\operatorname{BEC}}
+    \def\BSC{\operatorname{BSC}}
+    \def\AWGN{\operatorname{AWGN}}
+    \def\bra#1{{\langle{#1}|}}
+    \def\ket#1{{|{#1}\rangle}}
 
 \usepackage{fontspec}
     \setmainfont{Noto Serif}
@@ -20,10 +26,10 @@
 \parindent 0pt
 \parskip 1em
 
-\def\answersheet{}
-\def\addblank#1{\xdef\answersheet{\answersheet#1}}
 \newcounter{p}
-\def\Problem#1{\stepcounter{p}[\thep]\addblank{[\thep]\hbox to#1{}\hskip0pt plus#1}}
+\def\anssheet{}
+\def\Problem#1{\stepcounter{p}[\thep]\addblank{#1}}
+\def\addblank#1{\xdef\anssheet{\anssheet[\thep]\hbox to#1{}\hskip0pt plus#1}}
 
 \newcounter{c}
 \def\choice#1{%
@@ -33,7 +39,7 @@
 \def\no{\choice{}}
 \def\yes{\choice{}}
 
-\section*{Error Correcting Codes - Midterm Exam}
+\section*{Error Correcting Codes - Final Mock}
 
 \sffamily
 
@@ -173,24 +179,49 @@ Serial combination makes channels
 \yes more noisy
 
 \Problem{2em}
-Parallel combination turn two BECs into
+Parallel combination turns two BECs into
 \yes a BEC for sure
-\no a generic channel
+\no a generic channel.
+PS.\ For this type of problem where one choice implies the other,
+you must chose the strongest choice.
+That is, running a red light will be fined $\ge 1800$,
+not $\ge 1$.
 
 \Problem{2em}
-Serial combination turn two BECs into
+Serial combination turns two BECs into
 \no a BEC for sure
 \yes a generic channel
 
 \Problem{2em}
-Parallel combination turn two BSCs into
+Parallel combination turns two BSCs into
 \no a BSC for sure
 \yes a generic channel
 
 \Problem{2em}
-Serial combination turn two BSCs into
+Serial combination turns two BSCs into
 \yes a BSC for sure
 \no a generic channel
+
+\Problem{2em}
+A bounded martingale $M_n \in [0, 1]$ converges to
+\no a random variable $M_\infty \in \{0, 1\}$ for sure
+\yes a random variable $M_\infty \in [0, 1]$
+\no unfortunately it may not converge
+
+\Problem{2em}
+A submartingale is like a martingale,
+except that tomorrow's expectation can be better than today's.
+A bounded submartingale $S_n \in [0, 1]$ converges to
+\no a random variable $S_\infty \in \{0, 1\}$ for sure
+\yes a random variable $S_\infty \in [0, 1]$
+\no unfortunately it may not converge
+
+\Problem{2em}
+If a submartingale $Z_n$ converges to $Z_\infty \in \{0, 1\}$,
+then the probability $P(Z_\infty = 1)$ is
+\yes $\ge Z_0$
+\no $\le Z_0$
+\no not necessarily comparable to $Z_0$.
 
 \Problem{2em}
 Using the Zech representation,
@@ -211,13 +242,55 @@ With the polynomial representation
 what is $0001111 \cdot 1110000 \cdot 0011100$ in $\FF_{128}$?
 
 \Problem{2em}
+A tetrahedral erasure channel
+TEC$(p, q, r, s, t)$ is a channel with input alphabet $\FF_4$
+and output alphabet $\{0, 1, \ast\}^3$.
+Note that there is a trace function $\tr\colon \FF_4 \to \FF_2$
+that is the same trace function as if $\FF_4$
+is represented as 2-by-2 matrices over $\FF_2$.
+Given an input $x \in \FF_4$, the TEC outputs
+\begin{itemize}
+    \item $(\tr(x\omega), \tr(x), \tr(x/\omega))$ w.p.\ $p$,
+    \item $(\tr(x\omega), \ast, \ast)$ w.p.\ $q$,
+    \item $(\ast, \tr(x), \ast)$ w.p.\ $r$,
+    \item $(\ast, \ast, \tr(x/\omega))$ w.p.\ $s$, and
+    \item $(\ast, \ast, \ast)$ w.p.\ $t$.
+\end{itemize}
+Here, $\omega \in \FF_4$ is a fixed element that is not in $\FF_2$.
+Show that, if I send $a \in \FF_2$ through BEC$(\phi)$
+and $b \in \FF_2$ through BEC$(\psi)$,
+then this is equivalent to sending $a + b\omega$ through a TEC.
+Express the pqrst of this TEC using $\phi$ and $\psi$.
+
+\Problem{2em}
+Find the conditional entropy of TEC$(p, q, r, s, t)$.
+
+\Problem{2em}
+Length-$2$ quaternary polar code is used over TEC.
+Show that the parallel combination of
+TEC$(p, q, r, s, t)$ and TEC$(p', q', r', s', t')$ is a TEC
+by finding the new pqrst using $p, \dotsc, t'$
+
+\Problem{2em}
+The same problem for serial combination.
+
+\Problem{2em}
+Recall that parallel and serial combinations
+turn the $x$ in BEC$(x)$ to $x \pm x (1 - x)$.
+So the the difference between the conditional entropies
+of the parallel and serial combinations is $2 x (1 - x)$.
+Now, for the special case TEC$(p, r, r, r, t)$,
+express (simplify) the difference between the conditional entropies
+of the parallel and serial combinations.
+
+\Problem{2em}
 Alice is sending some bits.
 The channel Bob sees is BEC with erasure probability $0.1$.
 The channel Eve sees is BEC with capacity $0.1$.
 Find a sequence of P (parallel) and S (serial)
 so that Bob's new erasure probability is less than $0.01$,
 and Eve's new capacity is less than $0.01$.
-(If your answer is too long for computer to double-check,
+(If your answer is too pathological for my computer to double-check,
 I will ask you to show me a proof of correctness.)
 
 \Problem{2em}
@@ -239,412 +312,152 @@ Prove that, for any $\varepsilon > 0$, there exists a $\delta > 0$ such that,
 if $Z(W) > 1 - \delta$ for some BMSC $W$, then $H(W) > 1 - \varepsilon$.
 
 \Problem{2em}
-Let $W$ and $V$ be two BMSCs whose outputs are LLR values.
-If there exists an even function $f$ such that the output of $W$
-can be simulated by passing the output of $V$ through $f$,
-we say that $W$ is a \emph{degrade} of $V$, and $V$ is an \emph{upgrade} of $W$.
+Let $W$ and $V$ be two BMSCs.
+If there exists a randomized function $f$ such that the output of $W$
+can be simulated by passing the output of $V$ through $f$, we say that
+$W$ is a \emph{degrade} of $V$, and $V$ is an \emph{upgrade} of $W$.
+For any $0 < p < q < 1$, it is known that BEC$(q)$ is a degrade of BEC$(p)$.
+What does the randomized function $f$ look like?
 
+\Problem{2em}
+For any $0 < p < q < 1$, it is known that BSC$(q)$ is a degrade of BSC$(p)$.
+What does the randomized function $f$ look like?
+
+\Problem{2em}
+For any $0 <  < s < 1$, it is known that AWGN$(s)$ is a degrade of
+AWGN$(t)$, where $s$ and $t$ are variances, and the inputs are $\pm1$.
+What does the randomized function $f$ look like?
+
+\Problem{2em}
+Show that, if $W$ is a degrade of $V$,
+then $W \star U$ is a degrade of $V \star U$,
+where $\star$ means parallel combination.
+
+\Problem{2em}
+Do the same problem if $\star$ means serial combination.
+
+\Problem{2em}
+Suppose that the channel Bob sees is BEC$(p)$,
+and the channel Eve sees is BEC$(q)$.
+Suppose that Eve's channel must output erasure if Bob's channel does.
+So Eve's channel is a \emph{physical} degrade of Bob's,
+not just a \emph{statistical} degrade.
+Now, for any sequence $\sigma \in \{p, s\}^n$ of parallel and serial,
+show that BEC$(q)^\sigma$ is a physical degrade of BEC$(p)^\sigma$.
+
+\Problem{2em}
+Let us analyze $(3, 6)$-LDPC using density evolution.
+When the underlying channel is BEC$(1/3)$,
+how many iterations of belief propagation do you need
+to bring the fraction of erased VNs to $1/10$ or below.
+
+\Problem{2em}
+When the underlying channel is $W$,
+the LLRs on each VN is a random variable.
+The distribution of these random variable changes after one iteration of BP.
+Which channel's LLR has the same distribution as that?
+
+\Problem{2em}
+Which channel describes the distribution of LLRs after two iterations of BP?
+
+\Problem{2em}
+Polar codes have a great ability called \emph{rate matching}.
+At length $2^n$, polar codes offer codes of rates
+$1/2^n, 2/2^n, \dotsc, (2^n - 1) / 2^n$
+by selecting info sets and frozen sets of proper sizes.
+That is, one chip can handle multiple code rates by reusing decoder area.
+To determine info and frozen sets, the following procedure is used:
+Assume that every channel is a frozen bit, that is,
+the decoder always has the correct ``$u_1$'' when decoding for ``$u_2$''.
+However, we still record if a $u_i$ is mis-decoded.
+Now, for a polar code of length $4$,
+suppose that only the second BEC outputs erasure,
+which bit-channel(s) is mis-decoded?
+%
+PS.\ For those of you who does not think BEC is a good model of channel,
+imagine that the same question is asked for BSC.
+
+\Problem{2em}
+The same question but the first and the last BEC output erasures.
+
+\Problem{2em}
+In the bit-flip basis, also called the Z-basis,
+$\bra\uparrow$ is the row vector $[1\, 0]$ and
+$\bra\downarrow$ is the row vector $[0\, 1]$.
+In the phase basis, also called the X-basis,
+$\bra+$ is the row vector $[1\, 1]/\sqrt2$, and
+$\bra-$ is the column vector $[1\, -1]/\sqrt2$.
+Find the 2-by-2 matrix $H$ such that
+$\bra\uparrow H = \bra+$ and $\bra\downarrow H = \bra-$.
+
+\Problem{2em}
+Find the matrix $H'$ that does the opposite direction of change of basis.
+That is, $\bra+ H' = \bra\uparrow$ and $\bra- H' = \bra\downarrow$.
+
+\Problem{2em}
+The NOT gate in the phase basis maps
+\begin{itemize}
+    \item $\bra+$ to $\bra-$, and
+    \item $\bra-$ to $\bra+$.
+\end{itemize}
+Express this NOT gate in the bit flip basis.
+
+\Problem{2em}
+The CNOT gate in the phase basis maps
+\begin{itemize}
+    \item $\bra{++}$ to $\bra{++}$,
+    \item $\bra{+-}$ to $\bra{+-}$,
+    \item $\bra{-+}$ to $\bra{--}$, and
+    \item $\bra{--}$ to $\bra{-+}$.
+\end{itemize}
+Express this CNOT gate in the bit flip basis.
+
+\Problem{2em}
+Find a 2-by-2 matrix $S$ such that $S^2$
+is the NOT gate in the bit flip basis.
+
+\Problem{2em}
+PS is
+\tikz [baseline=-0.5ex] \draw
+    (0, 0) circle (0.05)
+    (0, 0) to [bend left] (1, 0.5) circle (0.05)
+    (0, 0) to [bend right] (1, -0.5) circle (0.05)
+    (1, 0.5) to [bend left] (2, 0) circle (0.05)
+    (1, -0.5) to [bend right] (2, 0)
+;
+Draw PPSPS.
+
+\Problem{2em} (2x)
+Express $\binom{1000}{333}$ in scientific notation.
+
+\Problem{2em} (2x)
+Express $Z(\mathrm{BSC}(0.1)^{ppppp})$ in scientific notation.
+
+\Problem{2em} (2x)
+Express $Z(\mathrm{BSC}(0.1)^{sssss})$ in scientific notation.
+
+\Problem{2em} (2x)
+Define $T(\BSC(p))$ as $|1 - 2p|$.
+Define the $T$ of any convex combination of BSCs to be
+the same convex combination of the $T$'s of the BSCs.
+Express $T(\BSC(0.2345)^p)$ in scientific notation.
+
+\Problem{2em} (2x)
+Express $T(\AWGN(0.2345))$ in scientific notation.
+
+\Problem{2em}
+\Problem{2em}
+\Problem{2em}
+\Problem{2em}
+\Problem{2em} (5x)
+There will be five problems that ask you to guess
+certain quantities regarding real-world usage of error-correcting codes.
 
 \clearpage
 
-% \section{Code Meta}
-
-
-
-\Problem{2em}
-A symbol is the basic unit in the context of error-correcting codes;
-it corresponds to which basic unit in linear algebra?
-\no a basis
-\no a vector
-\no a linear subspace
-\yes a finite field element
-
-\Problem{2em}
-Because the theory of error-correcting codes
-is closely related to linear algebra,
-a codeword is quite often used interchangeably with
-which of the following terminologies?
-\no a basis
-\yes a vector
-\no a linear subspace
-\no a finite field element
-
-\Problem{2em}
-The alphabet size is very crucial in coding theory
-as MDS codes and near-MDS codes are easier to construct
-when the alphabet size is larger.
-Among the following choices, which one do you think
-is the most probable notation that can be interpreted as the alphabet size?
-\no $n$
-\no $k$
-\no $d$
-\yes $|F|$ 
-
-\Problem{2em}
-In literature, the code rate is sometimes
-not an independent variable, i.e., it can be expressed by other quantities.
-Assuming the usual notation in coding theory as well as in this course,
-which of the following is most likely the expression of the code rate?
-\yes $k/n$
-\no $d/n$
-\no $k \log_2 |F|$
-\no $\log_{|F|} n$
-
-\Problem{2em}
-When discussing a family of codes,
-it is not favorable to talk about the absolute distance
-because it varies from code to code.
-However, for certain applications,
-the relative distance might tend to a fixed constant,
-making them a parameter worth studying.
-When there is only one code, nevertheless,
-how would you express the relative distance?
-\no $k/n$
-\yes $d/n$
-\no $k \log_2 |F|$
-\no $\log_{|F|} n$
-
-\Problem{2em}
-By the work of Shannon, we know that
-codes with larger and larger block lengths
-achieve Shannon capacity.
-But this doesn't mean that we should use very large block lengths
-because of latency and decoding complexity.
-To quantify how many message bits are transmitted per block so that
-we can infer how much latency we are going to bear, it is expressed as?
-\no $k/n$
-\no $d/n$
-\yes $k \log_2 |F|$
-\no $\log_{|F|} n$
-
-% \section{Popular codes}
-
-\Problem{3em}
-Linear codes is widely studied in coding theory
-because of several nice properties.
-Among the given choices, select as many linear codes as possible.
-\yes cyclic code
-\yes repetition code
-\no tension product code
-
-\Problem{3em}
-Here are some closely related codes.
-Select exactly the ones that are linear codes.
-\no singleton code
-\yes single parity-check code
-\yes low-density parity-check code
-
-\Problem{3em}
-You are given several choices.
-Your job is to select one or more choices such that the select choices
-are all linear codes and none of the unselected choices is a linear code.
-\yes Hamming code
-\no Muller--Solomon code
-\no Bose--Chiwawa--Hondatomato code
-
-\Problem{4em}
-In class, we introduce an exceptional family of codes whose codewords can be,
-and should be, arranged as 2D matrices.
-In class, we comment that decoding such codes looks like a <noun> puzzle.
-
-\Problem{4em}
-We also introduce evaluation codes in class.
-Among them there is a binary one and a non-binary one.
-The binary one evaluates <adjective> polynomials,
-where <adjective> also appears in the mock exam.
-
-\Problem{4em}
-What about the non-binary one?
-It evaluates <adjective> polynomials,
-enjoys the MDS property,
-and finds applications in, e.g., QR codes.
-
-% \section{Linear Algebra}
-
-\Problem{4em}
-The entries of the following matrix are in $\FF_2$.
-What are the parameters $[n, k, d]$
-when the matrix is treated as the $G$ of some error-correcting code?
-\[
-    \setcounter{MaxMatrixCols}{12}
-    \begin{bmatrix}
-        0 & 0 & 0 & 0 & 0 & 0 & 1 & 1 & 1 & 1 & 1 & 1 \\
-        1 & 0 & 1 & 0 & 1 & 0 & 1 & 0 & 1 & 0 & 1 & 0 \\
-        1 & 1 & 0 & 1 & 1 & 0 & 1 & 1 & 0 & 1 & 1 & 0 \\
-    \end{bmatrix}
-\]
-
-\Problem{10em}
-The weight enumerator of a code
-is an essential tool used to study its performance.
-It not only captures the minimal distance of the code, but it also
-gives the ``coefficient'' in the frame error rate approximation.
-What is its weight enumerator (as a polynomial in $X$)
-of the code generated by the $G$ above?
-
-\Problem{10em}
-An information set is a subset of columns such that,
-when the corresponding symbols are not erased,
-the entire codeword can be recovered,
-while erasing even one more symbol makes the recovery impossible.
-List all information sets containing the first two columns
-of the $G$ discussed above.
-
-\Problem{10em}
-An information set can also be defined
-as a subset of columns such that
-isolating these columns and deleting all other columns
-leads to a square matrix that is invertible.
-List all information sets that
-do not use the first two columns and
-do not use neighboring columns
-(that is, column $j$ and column $j + 1$ cannot both be used).
-(There are about 13 answers.)
-
-\Problem{10em}
-What is the $H$ corresponding to this $G$?
-Note that $H$ is not unique.
-So make the top rows of $H$ the identity matrix
-(this is called the systematic form)
-and answer the bottom part of $H$.
-
-\Problem{10em}
-Consider the code generated by the $G$ above.
-Shortening a code at the first column means that
-we are interested in codewords whose first entry is zero.
-Find a generator matrix of the shortened code,
-with the first column removed because we all know it is all zero.
-Then find the rref form of the matrix by row operations
-(but no column permutation, i.e., no pivoting).
-
-\Problem{5em}
-What is the smallest Reed--Muller code containing the codeword below?
-Answer the parameters $(r, m)$ and $[n, k, d]$.
-Note that I did not specify which directions are $x$, $y$, and $z$.
-But it does not matter, because Reed--Muller codes are invariant
-under variable permutations.
-In fact, it is invariant under a larger group of automorphisms:
-the affine group.
-\[\begin{tikzpicture}
-    \foreach \a in {0, 1} {
-        \tikzset{xshift=\a * 3cm}
-        \foreach \x in {0, 1} {
-            \foreach \y in {0, 1} {
-                \draw [opacity=0.2]
-                    (\x, \y, 0) -- (\x, \y, 1)
-                    (\y, 0, \x) -- (\y, 1, \x)
-                    (0, \x, \y) -- (1, \x, \y)
-                ;
-                \foreach \z in {0, 1} {
-                    \foreach \w in {0, 1} {
-                        \pgfmathtruncatemacro\eval
-                        {mod(\x * \z + \y * \a, 2)}
-                        \draw (\x, \y, \z) node {$\eval$};
-                    }
-                }
-            }
-        }
-    }
-\end{tikzpicture}\]
-
-\Problem{5em}
-What is the smallest Reed--Muller code containing the codeword below?
-Answer the parameters $(r, m)$ and $[n, k, d]$.
-\foreach \a in {0, 1} {
-    \[\begin{tikzpicture}
-        \foreach \b in {0, 1} {
-            \tikzset{xshift=\b * 3cm}
-            \foreach \x in {0, 1} {
-                \foreach \y in {0, 1} {
-                    \draw [opacity=0.2]
-                        (\x, \y, 0) -- (\x, \y, 1)
-                        (\y, 0, \x) -- (\y, 1, \x)
-                        (0, \x, \y) -- (1, \x, \y)
-                    ;
-                    \foreach \z in {0, 1} {
-                        \foreach \w in {0, 1} {
-                            \pgfmathtruncatemacro\eval
-                            {mod(1 + \z*(1-\x) + (1-\a)*\b + \y*\z*\a*\b, 2)}
-                            \draw (\x, \y, \z) node {$\eval$};
-                        }
-                    }
-                }
-            }
-        }
-    \end{tikzpicture}\]
-}
-
-\Problem{6em}
-What is the generator polynomial of the
-smallest cyclic code containing $01011100110100$?
-Note that one can interpret 1011 as $x^3 + x + 1$ or $1 + x^2 + x^3$.
-But either way the answer is unique if it is written down as a binary string.
-The high--low degree distinction is not important here;
-what matters is the left--right direction.
-
-\Problem{6em}
-The first row of $H$ is $0001$ and the last row is $1111$.
-Between them are binary representations of $2$--$14$.
-Correct the received word $111110000011111$ that is flipped at most once.
-
-\Problem{3em}
-A rateless code is used to protect $3$ bits: $a$, $b$, and $c$.
-Seven linear combinations are sent periodically:
-$a$, $a + b$, $b$, $b + c$, $a + b + c$, $a + c$, $c$.
-The erasure pattern is nnnynnnynnnynnny ... (three nos one yes).
-How many symbols are sent before the receiver can decode all three bits?
-
-% \section{Finite Field}
-
-\Problem{10em}
-List the sizes of all finite fields from $20$ to $40$.
-
-\Problem{6em}
-Find one irreducible polynomial of degree $9$ over $\FF_2$.
-
-\Problem{6em}
-Find one irreducible polynomial of degree $5$ over $\FF_3$.
-
-\Problem{10em}
-Use the polynomial representation (you can say 1001 instead of $x^3 + 1$)
-to reproduce the addition table of $\FF_8$ on the answer sheet.
-
-\Problem{10em}
-Use the polynomial representation (you can say 1001 instead of $x^3 + 1$)
-to reproduce the division table of $\FF_8$ on the answer sheet.
-
-\Problem{10em}
-Use the Zech-logarithm representation
-to reproduce the addition table of $\FF_8$ on the answer sheet.
-
-\Problem{10em}
-Use the Zech-logarithm representation
-to reproduce the division table of $\FF_8$ on the answer sheet.
-
-\Problem{10em}
-What is the most natural $G$ of the $[7, 3]$ Reed--Solomon code over $\FF_7$?
-(Row operations on $G$ does not change the code.
-But there is a special $G$ that aligns with the narrative.)
-
-\Problem{4em}
-A BCH code with designed roots $\alpha, \alpha^2, \alpha^3$ is used,
-where $\alpha$ is the generator of $\FF_{256}$.
-A received word $r$ is such that
-$r(\alpha) = \alpha^{249}$ and $r(\alpha^3) = \alpha^{67}$.
-Find the error-locating polynomial $aX^2 + bX + c$.
-
-\Problem{4em}
-The polynomial is said to be error-locating
-because its roots reveal the locations of the errors.
-Usually, having $\alpha^j$ as a root means that the error is at position $j$.
-Solve the error-locating polynomial above.
-
-% \section{Combinatorics}
-
-\Problem{3em} (2x)
-For the $[7, 3]$ Reed--Solomon over $\FF_7$,
-how many codewords have distinct symbols?
-There is a clever trick that can find the exact answer,
-but since a roughly estimated is also acceptable,
-you can simply sample a couple of codewords and extrapolate the answer.
-It is the same idea of counting the number of fish in a lake
-by catching, tagging, and releasing.
-
-\Problem{3em} (2x)
-Consider a tensor product code whose codewords are
-$30 \times 30$ binary matrices whose rows and columns sum to even numbers.
-How many codewords have weight $6$?
-It is possible to express this answer using multiple binomial coefficients.
-But I want that the answer is in scientific notation.
-So please evaluate all the binomial coefficients.
-
-\Problem{3em} (2x)
-Consider a tensor product code whose codewords are
-$10 \times 10 \times 10$ binary cubes whose ``3D-rows''
-(ten collinear entries parallel to the X, Y, or Z axis)
-sum to even numbers.
-How many codewords have weight $6$?
-Again, this problem can be solved exactly using binomial coefficients.
-But I want scientific notation.
-
-\Problem{3em} (2x)
-The corresponding trellis of a turbo code
-has four rows and five columns.
-From one column to the next, only $+0, +1$ are allowed.
-The code is used over an erasure channel.
-How many erasure patterns are such that
-the decoder cannot recover the message correctly?
-
-% \section{Probability}
-
-\Problem{3em} (2x)
-If a Wi-Fi environment is such that
-every $1$ KiB of data has an error probability of $10^{-8}$,
-what is the probability that a $1$-GiB file contains at least one error?
-Note that some brands use 1 KB = 1000 bytes instead of 1024 bytes
-to confuse customers.
-That is why the middle-i version, KiB, MiB, GiB, etc, is introduced.
-However, for these questions,
-I don't think it matters that much which definition you use.
-
-\Problem{3em} (2x)
-What is the new probability if every KiB is protected by a parity-check bit
-and resent until the parity check matches?
-As you might have already guessed,
-there are many ways to interpret how the parity check is added.
-For instance it can be $n = 1024$ or $k = 1024$.
-But does it matter?
-
-\Problem{3em} (2x)
-What is the capacity of the binary symmetric channel
-with crossover probability $10^{-2}$?
-
-\Problem{3em} (2x)
-What is the frame error rate if the Hamming code
-of length $7$ is used over the BSC above?
-
-\Problem{3em} (2x)
-Now the code above is used to protect the symbols
-of an $[14, 10]$ RS code over $\FF_{128}$.
-What is the frame error rate?
-
-\Problem{3em} (2x)
-BPSK is used over AWGN with $\sigma = 0.1$.
-Three symbols whose product is $1$ are sent.
-What is frame error rate?
-
-\Problem{3em} (2x)
-16-QAM is used over a pair of AWGN channels
-(one for the real part and one for the imaginary part) with $\sigma = 0.1$.
-A signal $s$ such that $\Re s, \Im s \in \{-1.5, -0.5, 0.5, 1.5\}$ is sent,
-and $1 + 1i$ is received.
-What is the posterior probability of $s = -1.5 - 1.5i$?
-
-\Problem{3em} (2x)
-What is the posterior probability of $s = -0.5 -0.5i$?
-
-% \section{Relevant Knowledge}
-
-\Problem{3em} (5x)
-At 120 Hz refresh rate, how much data (bits per second)
-is transmitted over HDMI for a 1920x1080 display with 24-bit colors?
-
-\Problem{3em} (5x)
-What is the largest QAM modulation Wi-Fi 6 supports?
-
-\Problem{3em} (5x)
-How much RAM does iPhone 17 Pro Max have?
-
-\Problem{3em} (5x)
-How many FLOPS can GeForce RTX 5090 deliver
-for single-precision (FP32) operations?
-
-\Problem{3em} (5x)
-How much data does the large hadron collider (LHC) generate each year?
-
 \cleardoublepage
 
-\section*{Error Correcting Codes - Midterm Exam}
+\section*{Error Correcting Codes - Final Mock}
 
 \parskip0pt
 \advance\lineskip1cm plus1fil
@@ -652,6 +465,6 @@ How much data does the large hadron collider (LHC) generate each year?
 
 Name (zh or en) \hfil Student ID
 
-\answersheet
+\anssheet
 
 \end{document}
